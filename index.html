@@ -9,10 +9,20 @@
   <body>
     <div class="main">
       <div class="score">
-        <div class="fox"></div>
-        <div class="hounds"></div>
-        <div class="replay"></div>
-        <div class="new"></div>
+        <div class="players">
+          <div class="player" id="fox">
+            <div class="marker" id="foxMarker"></div>
+            <div class="name" id="foxName">Fox</div>
+          </div>
+          <div class="player" id="hounds">
+            <div class="marker" id="houndsMarker"></div>
+            <div class="name" id="houndsName">Hounds</div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="replay">Replay</button>
+          <button class="new">New</button>
+        </div>
       </div>
       <div class="board"></div>
     </div>
