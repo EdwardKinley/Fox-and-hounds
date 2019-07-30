@@ -21,7 +21,7 @@ body {
 .score {
   display: flex;
   flex-direction: column;
-  background-color: pink;
+  /* background-color: black; */
   height: 95vh;
   width: 25vh;
   margin-right: 3vh;
@@ -42,7 +42,7 @@ body {
   flex-direction: row;
   /* justify-content: center; */
   align-items: center;
-  /* background-color: pink; */
+  background-color: black;
   height: 10vh;
   width: 100%;
 }
@@ -51,6 +51,14 @@ body {
   height: 10vh;
   width: 10vh;
   /* background-color: white; */
+}
+
+#foxName {
+  color: lime;
+}
+
+#houndsName {
+  color: blue;
 }
 
 .buttons {
@@ -68,6 +76,9 @@ button {
   border: 0;
   margin: 0 0 2.5vh 0;
   transition: transform 0.4s ease;
+  background-color: red;
+  padding: 1vh;
+  border-radius: 0.5vh;
 }
 
 button:hover {
@@ -99,4 +110,18 @@ button:hover {
   align-items: center;
   height: 100%;
   /* background-color: red; */
+}
+
+.fox {
+  height: 90%;
+  width: 90%;
+  border-radius: 50%;
+  background-color: lime;
+}
+
+.hound {
+  height: 90%;
+  width: 90%;
+  border-radius: 50%;
+  background-color: blue;
 }
