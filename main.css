@@ -83,3 +83,12 @@ button:hover {
   height: 95vh;
   width: 95vh;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: brown;
+  width: 100%;
+}
