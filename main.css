@@ -23,26 +23,35 @@ body {
   flex-direction: column;
   /* background-color: black; */
   height: 95vh;
-  width: 25vh;
+  width: 30vh;
   margin-right: 3vh;
 }
 
 .players {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
-  /* background-color: yellow; */
-  height: 50vh;
+  /* background-color: black; */
+  height: 30vh;
   width: 100%;
+  border-radius: 1vh;
 }
 
-.player {
+.marker {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* .player {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   align-items: center;
-  background-color: black;
   height: 10vh;
   width: 100%;
 }
@@ -50,7 +59,6 @@ body {
 .marker {
   height: 10vh;
   width: 10vh;
-  /* background-color: white; */
 }
 
 #foxName {
@@ -59,10 +67,10 @@ body {
 
 #houndsName {
   color: blue;
-}
+} */
 
 .buttons {
-  height: 50vh;
+  height: 70vh;
   /* background-color: purple; */
   display: flex;
   flex-direction: column;
@@ -77,12 +85,13 @@ button {
   margin: 0 0 2.5vh 0;
   transition: transform 0.4s ease;
   background-color: red;
+  color: white;
   padding: 1vh;
   border-radius: 0.5vh;
 }
 
 button:hover {
-  transform: scale(1.1);
+  transform: scale(1.07);
 }
 
 .board {

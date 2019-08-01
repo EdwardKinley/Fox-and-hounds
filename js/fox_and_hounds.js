@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addBoard();
   addPieces();
+  // showFoxTurn();
+  showHoundsTurn();
 
   function addBoard() {
     addRows();
@@ -49,6 +51,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const fox = document.createElement('div');
     fox.className = 'fox';
     document.querySelector('#space74').appendChild(fox);
+  }
+
+  function showFoxTurn() {
+    const markerSpace = document.querySelector('.marker');
+    const foxMarker = document.createElement('div');
+    foxMarker.className = 'fox';
+    foxMarker.style.height = '10.6875vh';
+    foxMarker.style.width = '10.6875vh';
+    markerSpace.appendChild(foxMarker);
+  }
+
+  function showHoundsTurn() {
+    const markerSpace = document.querySelector('.marker');
+    for (i=0; i<4; i++) {
+      const houndMarker = document.createElement('div');
+      houndMarker.className = 'hound';
+      houndMarker.style.height = '10.6875vh';
+      houndMarker.style.width = '10.6875vh';
+      houndMarker.style.margin = '2vh';
+      markerSpace.appendChild(houndMarker);
+    }
   }
 
 })
