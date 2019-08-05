@@ -3,12 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const board = document.querySelector('.board');
 
   const players = ['fox', 'hounds'];
+  const foxFirstPositionIdentifiers = [0, 2, 4, 6];
+  const foxFirstPositions = [];
+  foxPosition = null;
   currentPiece = null;
 
   addBoard();
   addPieces();
   showFoxTurn();
   instruct('Fox, take your position!');
+  makeInitialFoxPositionsClickable();
   // showHoundsTurn();
   // makePiecesClickable();
 
@@ -63,8 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function instruct(instruction) {
-    console.log(instruction);
     document.querySelector('.instructions').textContent = instruction;
+  }
+
+  function makeInitialFoxPositionsClickable() {
+    makeFoxFirstPositionsClickable();
+    makeFoxSecondPositionsClickable();
+  }
+
+  function makeFoxFirstPositionsClickable() {
+    for (i=0; i<foxFirstPositionIdentifiers.length; i++) {
+      foxFirstPositions.push(document.querySelector(`#space7${foxFirstPositionIdentifiers[i]}`));
+      // foxFirstPositions[i].addEventListener('click', (event) => {
+      //   addFox(event.path[0]);
+      // })
+      foxFirstPositions[i].addEventListener('click', addFoxToFirstPosition);
+    }
+  }
+
+  function addFoxToFirstPosition() {
+    for (j=0; j<foxFirstPositions.length; j++) {
+      foxFirstPositions[j].removeEventListener('click', addFoxToFirstPosition);
+    }
+    addFox(this);
+  }
+
+  function makeFoxSecondPositionsClickable() {
+
   }
 
   function makePiecesClickable() {
