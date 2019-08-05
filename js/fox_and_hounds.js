@@ -2,10 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const board = document.querySelector('.board');
 
+  const players = ['fox', 'hounds'];
+  currentPiece = null;
+
   addBoard();
   addPieces();
-  // showFoxTurn();
-  showHoundsTurn();
+  showFoxTurn();
+  instruct('Fox, take your position!');
+  // showHoundsTurn();
+  // makePiecesClickable();
 
   function addBoard() {
     addRows();
@@ -48,15 +53,40 @@ document.addEventListener('DOMContentLoaded', () => {
       hound.className = 'hound';
       document.querySelector(`#space0${hounds[i]}`).appendChild(hound);
     }
+  }
+
+  function addFox(location) {
     const fox = document.createElement('div');
     fox.className = 'fox';
-    document.querySelector('#space74').appendChild(fox);
+    location.appendChild(fox);
+    // document.querySelector('#space74').appendChild(fox);
+  }
+
+  function instruct(instruction) {
+    console.log(instruction);
+    document.querySelector('.instructions').textContent = instruction;
+  }
+
+  function makePiecesClickable() {
+    if (players[0] = 'fox') {
+      currentPiece = document.querySelector('.fox');
+    }
+    currentPiece.addEventListener('click', () => {
+      console.log(currentPiece);
+      showSelected(currentPiece);
+    });
+  }
+
+  function showSelected(piece) {
+    piece.parentNode.style.border = '0.52vh solid gold';
+    piece.style.height = '10.6875vh';
+    piece.style.width = '10.6875vh';
   }
 
   function showFoxTurn() {
     const markerSpace = document.querySelector('.marker');
     const foxMarker = document.createElement('div');
-    foxMarker.className = 'fox';
+    foxMarker.className = 'foxMarker';
     foxMarker.style.height = '10.6875vh';
     foxMarker.style.width = '10.6875vh';
     markerSpace.appendChild(foxMarker);
@@ -66,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const markerSpace = document.querySelector('.marker');
     for (i=0; i<4; i++) {
       const houndMarker = document.createElement('div');
-      houndMarker.className = 'hound';
+      houndMarker.className = 'houndMarker';
       houndMarker.style.height = '10.6875vh';
       houndMarker.style.width = '10.6875vh';
       houndMarker.style.margin = '2vh';

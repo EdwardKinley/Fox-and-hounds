@@ -48,6 +48,18 @@ body {
   flex-wrap: wrap;
 }
 
+.instructions {
+  height: 35vh;
+  /* background-color: blue; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instruction {
+  text-align: center;
+}
+
 /* .player {
   display: flex;
   flex-direction: row;
@@ -70,7 +82,7 @@ body {
 } */
 
 .buttons {
-  height: 70vh;
+  height: 30vh;
   /* background-color: purple; */
   display: flex;
   flex-direction: column;
@@ -103,6 +115,7 @@ button:hover {
   background-color: blue;
   height: 95vh;
   width: 95vh;
+  min-width: 95vh;
 }
 
 .row {
@@ -120,16 +133,17 @@ button:hover {
   align-items: center;
   height: 100%;
   /* background-color: red; */
+  box-sizing: border-box;
 }
 
-.fox {
+.fox, .foxMarker {
   height: 90%;
   width: 90%;
   border-radius: 50%;
   background-color: lime;
 }
 
-.hound {
+.hound, .houndMarker {
   height: 90%;
   width: 90%;
   border-radius: 50%;
