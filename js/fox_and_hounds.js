@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const players = ['fox', 'hounds'];
   const foxFirstPositionIdentifiers = [0, 2, 4, 6];
   const foxFirstPositions = [];
+  const foxSecondPositionIdentifiers = [1, 3, 5, 7];
+  const foxSecondPositions = [];
   foxPosition = null;
   currentPiece = null;
 
@@ -78,22 +80,42 @@ document.addEventListener('DOMContentLoaded', () => {
   function makeFoxFirstPositionsClickable() {
     for (i=0; i<foxFirstPositionIdentifiers.length; i++) {
       foxFirstPositions.push(document.querySelector(`#space7${foxFirstPositionIdentifiers[i]}`));
-      // foxFirstPositions[i].addEventListener('click', (event) => {
-      //   addFox(event.path[0]);
-      // })
       foxFirstPositions[i].addEventListener('click', addFoxToFirstPosition);
     }
   }
 
-  function addFoxToFirstPosition() {
-    for (j=0; j<foxFirstPositions.length; j++) {
-      foxFirstPositions[j].removeEventListener('click', addFoxToFirstPosition);
+  function makeFoxFirstPositionsUnclickable() {
+    for (i=0; i<foxFirstPositions.length; i++) {
+      foxFirstPositions[i].removeEventListener('click', addFoxToFirstPosition);
     }
+  }
+
+  function addFoxToFirstPosition() {
+    // for (j=0; j<foxFirstPositions.length; j++) {
+    //   foxFirstPositions[j].removeEventListener('click', addFoxToFirstPosition);
+    // }
+    makeFoxFirstPositionsUnclickable();
+    makeFoxSecondPositionsUnclickable();
     addFox(this);
   }
 
   function makeFoxSecondPositionsClickable() {
+    for (i=0; i<foxSecondPositionIdentifiers.length; i++) {
+      foxSecondPositions.push(document.querySelector(`#space6${foxSecondPositionIdentifiers[i]}`));
+      foxSecondPositions[i].addEventListener('click', addFoxToSecondPosition);
+    }
+  }
 
+  function makeFoxSecondPositionsUnclickable() {
+    for (i=0; i<foxSecondPositions.length; i++) {
+      foxSecondPositions[i].removeEventListener('click', addFoxToSecondPosition);
+    }
+  }
+
+  function addFoxToSecondPosition() {
+    makeFoxFirstPositionsUnclickable();
+    makeFoxSecondPositionsUnclickable();
+    addFox(this);
   }
 
   function makePiecesClickable() {
