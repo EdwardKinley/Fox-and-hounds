@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   currentPiece = null;
   hounds = [];
   movableHounds = [];
-  const spacesMoveToable = [];
+  spacesMoveToable = [];
 
   addBoard();
   addHounds();
@@ -142,6 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
     piece.style.width = '10.6875vh';
   }
 
+  function showUnselected(piece) {
+    piece.parentNode.style.border = 0;
+  }
+
   function showFoxTurn() {
     const markerSpace = document.querySelector('.marker');
     markerSpace.innerHTML = '';
@@ -154,7 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function enableFoxMove() {
     identifySpacesMoveToable();
-    console.log(spacesMoveToable);
+    // console.log(spacesMoveToable);
+    makeSpacesMoveToableMoveToable();
   }
 
   function identifySpacesMoveToable() {
@@ -166,6 +171,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (row+1 < 8 && space-1 > 0 && document.querySelector(`#space${row+1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space-1}`)); }
     if (row+1 < 8 && space+1 < 8 && document.querySelector(`#space${row+1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space+1}`)); }
+  }
+
+  function makeSpacesMoveToableMoveToable() {
+    for (i=0; i<spacesMoveToable.length; i++) {
+      spacesMoveToable[i].addEventListener('click', move);
+    }
+  }
+
+  function move() {
+    makeSpacesNotMoveToable();
+    emptySpacesMoveToable();
+    const spaceMovingTo = this;
+    addPiece(currentPiece.className, spaceMovingTo);
+    showUnselected(currentPiece);
+    removePiece(currentPiece.parentNode);
+    switchPlayers();
+  }
+
+  function makeSpacesNotMoveToable() {
+    for (i=0; i<spacesMoveToable.length; i++) {
+      spacesMoveToable[i].removeEventListener('click', move);
+    }
+  }
+
+  function emptySpacesMoveToable() {
+    spacesMoveToable = [];
+  }
+
+  function removePiece(space) {
+    space.removeChild(currentPiece);
+  }
+
+  function switchPlayers() {
+    players.splice(0, 0, players.pop());
+    if (players[0] == 'fox') { enableFoxMove(); }
+    else if (players[0] == 'hounds' ) { enableHoundMove(); }
   }
 
   function showHoundsTurn() {
@@ -198,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         movableHounds.push(hounds[i]);
       }
     }
-    console.log(movableHounds);
+    // console.log(movableHounds);
   }
 
   function foxIsMovable(fox) {
