@@ -9,9 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const foxSecondPositions = [];
   foxPosition = null;
   currentPiece = null;
+  hounds = [];
+  movableHounds = [];
+  const spacesMoveToable = [];
 
   addBoard();
-  addPieces();
+  addHounds();
+  // addPiece('fox', document.querySelector('#space12'));
+  // addPiece('fox', document.querySelector('#space14'));
   showFoxTurn();
   instruct('Fox, take your position!');
   makeInitialFoxPositionsClickable();
@@ -52,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function addPieces() {
+  function addHounds() {
     const hounds = [1, 3, 5, 7];
     for (i=0; i<hounds.length; i++) {
       const hound = document.createElement('div');
@@ -61,15 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function addFox(location) {
-    const fox = document.createElement('div');
-    fox.className = 'fox';
-    location.appendChild(fox);
+  function addPiece(kind, location) {
+    const piece = document.createElement('div');
+    piece.className = kind;
+    location.appendChild(piece);
     // document.querySelector('#space74').appendChild(fox);
   }
 
   function instruct(instruction) {
-    document.querySelector('.instructions').textContent = instruction;
+    document.querySelector('.instruction').textContent = instruction;
   }
 
   function makeInitialFoxPositionsClickable() {
@@ -91,12 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function addFoxToFirstPosition() {
-    // for (j=0; j<foxFirstPositions.length; j++) {
-    //   foxFirstPositions[j].removeEventListener('click', addFoxToFirstPosition);
-    // }
+    const space = this;
     makeFoxFirstPositionsUnclickable();
     makeFoxSecondPositionsUnclickable();
-    addFox(this);
+    addPiece('fox', space);
+    currentPiece = space.firstChild;
+    showSelected(currentPiece);
+    instruct('Fox, make your move!');
+    enableFoxMove();
   }
 
   function makeFoxSecondPositionsClickable() {
@@ -115,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function addFoxToSecondPosition() {
     makeFoxFirstPositionsUnclickable();
     makeFoxSecondPositionsUnclickable();
-    addFox(this);
+    addPiece('fox', this);
+    enableHoundMove();
   }
 
   function makePiecesClickable() {
@@ -136,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showFoxTurn() {
     const markerSpace = document.querySelector('.marker');
+    markerSpace.innerHTML = '';
     const foxMarker = document.createElement('div');
     foxMarker.className = 'foxMarker';
     foxMarker.style.height = '10.6875vh';
@@ -143,8 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
     markerSpace.appendChild(foxMarker);
   }
 
+  function enableFoxMove() {
+    identifySpacesMoveToable();
+    console.log(spacesMoveToable);
+  }
+
+  function identifySpacesMoveToable() {
+    const row = parseInt(currentPiece.parentNode.id[5]);
+    const space = parseInt(currentPiece.parentNode.id[6]);
+    if (currentPiece.className == 'fox') {
+      if (row-1 > 0 && space-1 > 0 && document.querySelector(`#space${row-1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space-1}`)); }
+      if (row-1 > 0 && space+1 < 8 && document.querySelector(`#space${row-1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space+1}`)); }
+    }
+    if (row+1 < 8 && space-1 > 0 && document.querySelector(`#space${row+1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space-1}`)); }
+    if (row+1 < 8 && space+1 < 8 && document.querySelector(`#space${row+1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space+1}`)); }
+  }
+
   function showHoundsTurn() {
     const markerSpace = document.querySelector('.marker');
+    markerSpace.innerHTML = '';
     for (i=0; i<4; i++) {
       const houndMarker = document.createElement('div');
       houndMarker.className = 'houndMarker';
@@ -154,5 +180,40 @@ document.addEventListener('DOMContentLoaded', () => {
       markerSpace.appendChild(houndMarker);
     }
   }
+
+  function enableHoundMove() {
+    showHoundsTurn();
+    instruct('Hounds, select a hound to move!');
+    findHounds();
+    findMovableHounds();
+  }
+
+  function findHounds() {
+    hounds = document.querySelectorAll('.hound');
+  }
+
+  function findMovableHounds() {
+    for (i=0; i<hounds.length; i++) {
+      if (houndIsMovable(hounds[i])) {
+        movableHounds.push(hounds[i]);
+      }
+    }
+    console.log(movableHounds);
+  }
+
+  function foxIsMovable(fox) {
+    const row = parseInt(fox.parentNode.id[5]);
+    const space = parseInt(fox.parentNode.id[6]);
+    return (document.querySelector(`#space${row+1}${space-1}`).firstChild == null || document.querySelector(`#space${row+1}${space+1}`).firstChild == null || document.querySelector(`#space${row-1}${space-1}`).firstChild == null || document.querySelector(`#space${row-1}${space+1}`).firstChild == null);
+  }
+
+  function houndIsMovable(hound) {
+    const row = parseInt(hound.parentNode.id[5]);
+    const space = parseInt(hound.parentNode.id[6]);
+    if (row == 7) { return false; };
+    return (document.querySelector(`#space${row+1}${space-1}`).firstChild == null || document.querySelector(`#space${row+1}${space+1}`).firstChild == null);
+  }
+
+
 
 })
