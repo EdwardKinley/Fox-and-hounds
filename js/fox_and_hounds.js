@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addBoard();
   addHounds();
+  enableNewGame();
   // addPiece('fox', document.querySelector('#space12'));
   // addPiece('fox', document.querySelector('#space14'));
   showFoxTurn();
@@ -64,6 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
       hound.className = 'hound';
       document.querySelector(`#space0${hounds[i]}`).appendChild(hound);
     }
+  }
+
+  function enableNewGame() {
+    document.querySelector('.new').addEventListener('click', () => {
+      location.reload();
+    })
   }
 
   function addPiece(kind, location) {
@@ -227,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     instruct('Hounds, select a hound to move!');
     findHounds();
     findMovableHounds();
+    makePiecesClickable();
   }
 
   function findHounds() {
