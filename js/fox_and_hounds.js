@@ -135,27 +135,31 @@ document.addEventListener('DOMContentLoaded', () => {
     for (i=0; i<hounds.length; i++) {
       hounds[i].addEventListener('click', makeHoundClickable);
     }
-    // currentPiece.addEventListener('click', () => {
-    //   console.log(currentPiece);
-    //   showSelected(currentPiece);
-    // });
   }
 
   function makeHoundClickable() {
     const piece = this;
     const space = this.parentNode;
-    console.log(space.id);
+    // console.log(space.id);
     if (currentPiece == null) {
       currentPiece = piece;
-      showSelected(currentPiece);
+      makeSelected(currentPiece);
     } else if (currentPiece == this) {
       showUnselected(currentPiece);
+      instruct('Hounds, select a hound to move!');
       currentPiece = null;
     } else {
       showUnselected(currentPiece);
       currentPiece = piece;
-      showSelected(currentPiece);
+      makeSelected(currentPiece);
     }
+  }
+
+  function makeSelected(piece) {
+    showSelected(piece);
+    instruct('Hound, make your move!');
+    identifySpacesMoveToable();
+    makeSpacesMoveToableMoveToable();
   }
 
   function showSelected(piece) {
@@ -176,9 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
     foxMarker.style.height = '10.6875vh';
     foxMarker.style.width = '10.6875vh';
     markerSpace.appendChild(foxMarker);
+    instruct('Fox, make your move!');
   }
 
   function enableFoxMove() {
+    showFoxTurn();
+    currentPiece = document.querySelector('.fox');
+    showSelected(currentPiece);
     identifySpacesMoveToable();
     makeSpacesMoveToableMoveToable();
   }
@@ -187,11 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const row = parseInt(currentPiece.parentNode.id[5]);
     const space = parseInt(currentPiece.parentNode.id[6]);
     if (currentPiece.className == 'fox') {
-      if (row-1 > 0 && space-1 > 0 && document.querySelector(`#space${row-1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space-1}`)); }
-      if (row-1 > 0 && space+1 < 8 && document.querySelector(`#space${row-1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space+1}`)); }
+      if (row > 0 && space > 0 && document.querySelector(`#space${row-1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space-1}`)); }
+      if (row > 0 && space < 7 && document.querySelector(`#space${row-1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row-1}${space+1}`)); }
     }
-    if (row+1 < 8 && space-1 > 0 && document.querySelector(`#space${row+1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space-1}`)); }
-    if (row+1 < 8 && space+1 < 8 && document.querySelector(`#space${row+1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space+1}`)); }
+    if (row < 7 && space > 0 && document.querySelector(`#space${row+1}${space-1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space-1}`)); }
+    if (row < 7 && space < 7 && document.querySelector(`#space${row+1}${space+1}`).firstChild == null) { spacesMoveToable.push(document.querySelector(`#space${row+1}${space+1}`)); }
   }
 
   function makeSpacesMoveToableMoveToable() {
@@ -201,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function move() {
+    makeHoundsUnmovable();
     makeSpacesNotMoveToable();
     emptySpacesMoveToable();
     const spaceMovingTo = this;
@@ -208,6 +217,15 @@ document.addEventListener('DOMContentLoaded', () => {
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
     switchPlayers();
+  }
+
+  function makeHoundsUnmovable() {
+    if (hounds.length > 0) {
+      for (i=0; i<hounds.length; i++) {
+        hounds[i].removeEventListener('click', makeHoundClickable);
+      }
+      hounds = [];
+    }
   }
 
   function makeSpacesNotMoveToable() {
@@ -227,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchPlayers() {
     currentPiece = null;
     players.splice(0, 0, players.pop());
+    console.log(players);
     if (players[0] == 'fox') { enableFoxMove(); }
     else if (players[0] == 'hounds' ) { enableHoundMove(); }
   }
@@ -274,7 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const row = parseInt(hound.parentNode.id[5]);
     const space = parseInt(hound.parentNode.id[6]);
     if (row == 7) { return false; };
-    return (document.querySelector(`#space${row+1}${space-1}`).firstChild == null || document.querySelector(`#space${row+1}${space+1}`).firstChild == null);
+    return (
+      ((document.querySelector(`#space${row+1}${space-1}`) != null) && (document.querySelector(`#space${row+1}${space-1}`).firstChild == null)) ||
+      ((document.querySelector(`#space${row+1}${space+1}`) != null) && (document.querySelector(`#space${row+1}${space+1}`).firstChild == null))
+    );
   }
 
 
