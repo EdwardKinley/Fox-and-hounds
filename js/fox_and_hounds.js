@@ -16,12 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   addBoard();
   addHounds();
   enableNewGame();
-  // addPiece('fox', document.querySelector('#space12'));
-  // addPiece('fox', document.querySelector('#space14'));
   showFoxTurn();
   instruct('Fox, take your position!');
   makeInitialFoxPositionsClickable();
-  // showHoundsTurn();
 
   function addBoard() {
     addRows();
@@ -133,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function makeHoundsSelectable() {
-    for (i=0; i<hounds.length; i++) {
-      hounds[i].addEventListener('click', makeHoundClickable);
+    for (i=0; i<movableHounds.length; i++) {
+      movableHounds[i].addEventListener('click', makeHoundClickable);
     }
   }
 
@@ -311,7 +308,5 @@ document.addEventListener('DOMContentLoaded', () => {
       ((document.querySelector(`#space${row+1}${space+1}`) != null) && (document.querySelector(`#space${row+1}${space+1}`).firstChild == null))
     );
   }
-
-
 
 })
