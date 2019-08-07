@@ -216,7 +216,15 @@ document.addEventListener('DOMContentLoaded', () => {
     addPiece(currentPiece.className, spaceMovingTo);
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
+    endGameIfFoxWins();
     switchPlayers();
+  }
+
+  function endGameIfFoxWins() {
+    if (document.querySelector('.fox').parentNode.id[5] == 0) {
+      instruct('Fox wins!');
+      showUnselected(currentPiece);
+    }
   }
 
   function makeHoundsUnmovable() {
