@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   instruct('Fox, take your position!');
   makeInitialFoxPositionsClickable();
   // showHoundsTurn();
-  // makePiecesClickable();
 
   function addBoard() {
     addRows();
@@ -77,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const piece = document.createElement('div');
     piece.className = kind;
     location.appendChild(piece);
-    // document.querySelector('#space74').appendChild(fox);
   }
 
   function instruct(instruction) {
@@ -133,14 +131,31 @@ document.addEventListener('DOMContentLoaded', () => {
     enableHoundMove();
   }
 
-  function makePiecesClickable() {
-    if (players[0] = 'fox') {
-      currentPiece = document.querySelector('.fox');
+  function makeHoundsSelectable() {
+    for (i=0; i<hounds.length; i++) {
+      hounds[i].addEventListener('click', makeHoundClickable);
     }
-    currentPiece.addEventListener('click', () => {
-      console.log(currentPiece);
+    // currentPiece.addEventListener('click', () => {
+    //   console.log(currentPiece);
+    //   showSelected(currentPiece);
+    // });
+  }
+
+  function makeHoundClickable() {
+    const piece = this;
+    const space = this.parentNode;
+    console.log(space.id);
+    if (currentPiece == null) {
+      currentPiece = piece;
       showSelected(currentPiece);
-    });
+    } else if (currentPiece == this) {
+      showUnselected(currentPiece);
+      currentPiece = null;
+    } else {
+      showUnselected(currentPiece);
+      currentPiece = piece;
+      showSelected(currentPiece);
+    }
   }
 
   function showSelected(piece) {
@@ -165,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function enableFoxMove() {
     identifySpacesMoveToable();
-    // console.log(spacesMoveToable);
     makeSpacesMoveToableMoveToable();
   }
 
@@ -211,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function switchPlayers() {
+    currentPiece = null;
     players.splice(0, 0, players.pop());
     if (players[0] == 'fox') { enableFoxMove(); }
     else if (players[0] == 'hounds' ) { enableHoundMove(); }
@@ -234,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     instruct('Hounds, select a hound to move!');
     findHounds();
     findMovableHounds();
-    makePiecesClickable();
+    makeHoundsSelectable();
   }
 
   function findHounds() {
@@ -247,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
         movableHounds.push(hounds[i]);
       }
     }
-    // console.log(movableHounds);
   }
 
   function foxIsMovable(fox) {
