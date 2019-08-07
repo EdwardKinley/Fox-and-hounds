@@ -128,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     makeFoxFirstPositionsUnclickable();
     makeFoxSecondPositionsUnclickable();
     addPiece('fox', this);
-    enableHoundMove();
+    switchPlayers();
+    // enableHoundMove();
   }
 
   function makeHoundsSelectable() {
@@ -216,15 +217,19 @@ document.addEventListener('DOMContentLoaded', () => {
     addPiece(currentPiece.className, spaceMovingTo);
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
-    endGameIfFoxWins();
-    switchPlayers();
+    if (foxWins()) {
+      declareFoxWinner();
+    } else {
+      switchPlayers();
+    }
   }
 
-  function endGameIfFoxWins() {
-    if (document.querySelector('.fox').parentNode.id[5] == 0) {
-      instruct('Fox wins!');
-      showUnselected(currentPiece);
-    }
+  function foxWins() {
+    return (document.querySelector('.fox').parentNode.id[5] == 0);
+  }
+
+  function declareFoxWinner() {
+    instruct('Fox wins!');
   }
 
   function makeHoundsUnmovable() {
