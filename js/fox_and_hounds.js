@@ -182,11 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function enableFoxMove() {
-    showFoxTurn();
     currentPiece = document.querySelector('.fox');
-    showSelected(currentPiece);
     identifySpacesMoveToable();
-    makeSpacesMoveToableMoveToable();
+    if (spacesMoveToable.length == 0) {
+      declareWinner('hounds');
+    } else {
+      showFoxTurn();
+      showSelected(currentPiece);
+      makeSpacesMoveToableMoveToable();
+    }
   }
 
   function identifySpacesMoveToable() {
@@ -215,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
     if (foxWins()) {
-      declareFoxWinner();
+      declareWinner('fox');
     } else {
       switchPlayers();
     }
@@ -225,8 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return (document.querySelector('.fox').parentNode.id[5] == 0);
   }
 
-  function declareFoxWinner() {
-    instruct('Fox wins!');
+  function declareWinner(winner) {
+    if (winner == 'fox') {
+      instruct('Fox wins!');
+    } else if (winner == 'hounds') {
+      instruct('Hounds win!');
+    }
   }
 
   function makeHoundsUnmovable() {
@@ -255,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchPlayers() {
     currentPiece = null;
     players.splice(0, 0, players.pop());
-    console.log(players);
+    // console.log(players);
     if (players[0] == 'fox') { enableFoxMove(); }
     else if (players[0] == 'hounds' ) { enableHoundMove(); }
   }
