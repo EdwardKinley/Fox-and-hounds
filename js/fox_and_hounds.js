@@ -130,10 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function makeHoundsSelectable() {
+    // console.log(movableHounds);
     for (i=0; i<movableHounds.length; i++) {
       movableHounds[i].addEventListener('click', makeHoundClickable);
     }
   }
+
+  // function makeHoundsUnselectable() {
+  //   for (i=0; i<movableHounds.length; i++) {
+  //     movableHounds[i].removeEventListener('click', makeHoundClickable);
+  //   }
+  // }
 
   function makeHoundClickable() {
     const piece = this;
@@ -143,10 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPiece = piece;
       makeSelected(currentPiece);
     } else if (currentPiece == this) {
+      makeSpacesNotMoveToable();
       showUnselected(currentPiece);
       instruct('Hounds, select a hound to move!');
       currentPiece = null;
     } else {
+      makeSpacesNotMoveToable();
       showUnselected(currentPiece);
       currentPiece = piece;
       makeSelected(currentPiece);
@@ -211,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function move() {
+    // makeHoundsUnselectable();
     makeHoundsUnmovable();
     makeSpacesNotMoveToable();
     emptySpacesMoveToable();
@@ -218,14 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
     addPiece(currentPiece.className, spaceMovingTo);
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
-    if (foxWins()) {
+    if (foxReachesFarSide()) {
       declareWinner('fox');
     } else {
       switchPlayers();
     }
   }
 
-  function foxWins() {
+  function foxReachesFarSide() {
     return (document.querySelector('.fox').parentNode.id[5] == 0);
   }
 
@@ -242,14 +252,16 @@ document.addEventListener('DOMContentLoaded', () => {
       for (i=0; i<hounds.length; i++) {
         hounds[i].removeEventListener('click', makeHoundClickable);
       }
-      hounds = [];
     }
+    hounds = [];
+    movableHounds = [];
   }
 
   function makeSpacesNotMoveToable() {
     for (i=0; i<spacesMoveToable.length; i++) {
       spacesMoveToable[i].removeEventListener('click', move);
     }
+    spacesMoveToable = [];
   }
 
   function emptySpacesMoveToable() {
@@ -286,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     instruct('Hounds, select a hound to move!');
     findHounds();
     findMovableHounds();
+    if (movableHounds.length == 0) { declareWinner('fox'); }
     makeHoundsSelectable();
   }
 
@@ -299,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
         movableHounds.push(hounds[i]);
       }
     }
+    // console.log(movableHounds);
   }
 
   function foxIsMovable(fox) {
