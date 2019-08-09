@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   hounds = [];
   movableHounds = [];
   spacesMoveToable = [];
+  foxLocations = [];
+  houndDepartures = [];
+  houndArrivals = [];
 
   addBoard();
   addHounds();
@@ -225,6 +228,12 @@ document.addEventListener('DOMContentLoaded', () => {
     makeSpacesNotMoveToable();
     emptySpacesMoveToable();
     const spaceMovingTo = this;
+    if (players[0] == 'fox') {
+      foxLocations.push(spaceMovingTo);
+    } else if (players[0] == 'hounds') {
+      houndDepartures.push(currentPiece.parentNode);
+      houndArrivals.push(spaceMovingTo);
+    }
     addPiece(currentPiece.className, spaceMovingTo);
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
@@ -245,6 +254,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (winner == 'hounds') {
       instruct('Hounds win!');
     }
+    replay();
+  }
+
+  function replay() {
+    setInterval();
+    for (i=0; i<foxLocations.length; i++) {
+      // foxLocations[i].style.backgroundColor = 'blue';
+    }
+    console.log('fox', foxLocations);
+    console.log('hounds leave', houndDepartures);
+    console.log('hounds arrive', houndArrivals);
   }
 
   function makeHoundsUnmovable() {
