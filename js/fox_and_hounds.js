@@ -295,11 +295,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function enableHoundMove() {
     showHoundsTurn();
-    instruct('Hounds, select a hound to move!');
     findHounds();
     findMovableHounds();
-    if (movableHounds.length == 0) { declareWinner('fox'); }
-    makeHoundsSelectable();
+    if (movableHounds.length == 0) {
+      declareWinner('fox');
+    } else if (movableHounds.length == 1) {
+      currentPiece = movableHounds[0];
+      makeSelected(currentPiece);
+    } else {
+      instruct('Hounds, select a hound to move!');
+      makeHoundsSelectable();
+    }
   }
 
   function findHounds() {
