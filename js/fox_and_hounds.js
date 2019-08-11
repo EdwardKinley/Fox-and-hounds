@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const board = document.querySelector('.board');
 
-  const players = ['fox', 'hounds'];
+  players = ['fox', 'hounds'];
   const foxFirstPositionIdentifiers = [0, 2, 4, 6];
   const foxFirstPositions = [];
   const foxSecondPositionIdentifiers = [1, 3, 5, 7];
@@ -12,9 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
   hounds = [];
   movableHounds = [];
   spacesMoveToable = [];
-  foxLocations = [];
-  houndDepartures = [];
-  houndArrivals = [];
+  // foxLocations = [];
+  // houndDepartures = [];
+  // houndArrivals = [];
+  firstPositionPlayed = null;
+  departures = ['x'];
+  arrivals = [];
 
   addBoard();
   addHounds();
@@ -61,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hounds = [1, 3, 5, 7];
     for (i=0; i<hounds.length; i++) {
       const hound = document.createElement('div');
-      hound.className = 'hound';
+      hound.className = 'hounds';
       document.querySelector(`#space0${hounds[i]}`).appendChild(hound);
     }
   }
@@ -108,6 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPiece = space.firstChild;
     showSelected(currentPiece);
     instruct('Fox, make your move!');
+    firstPositionPlayed = true;
+    arrivals.push(space);
     enableFoxMove();
   }
 
@@ -128,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
     makeFoxFirstPositionsUnclickable();
     makeFoxSecondPositionsUnclickable();
     addPiece('fox', this);
+    firstPositionPlayed = false;
+    arrivals.push(this);
     switchPlayers();
     // enableHoundMove();
   }
@@ -138,12 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
       movableHounds[i].addEventListener('click', makeHoundClickable);
     }
   }
-
-  // function makeHoundsUnselectable() {
-  //   for (i=0; i<movableHounds.length; i++) {
-  //     movableHounds[i].removeEventListener('click', makeHoundClickable);
-  //   }
-  // }
 
   function makeHoundClickable() {
     const piece = this;
@@ -223,17 +224,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function move() {
-    // makeHoundsUnselectable();
     makeHoundsUnmovable();
     makeSpacesNotMoveToable();
     emptySpacesMoveToable();
     const spaceMovingTo = this;
-    if (players[0] == 'fox') {
-      foxLocations.push(spaceMovingTo);
-    } else if (players[0] == 'hounds') {
-      houndDepartures.push(currentPiece.parentNode);
-      houndArrivals.push(spaceMovingTo);
-    }
+    departures.push(currentPiece.parentNode);
+    arrivals.push(spaceMovingTo);
+    // if (players[0] == 'fox') {
+    //   departures.push(currentPiece.parentNode);
+    //   arrivals.push(spaceMovingTo);
+    // } else if (players[0] == 'hounds') {
+    //   houndDepartures.push(currentPiece.parentNode);
+    //   houndArrivals.push(spaceMovingTo);
+    // }
     addPiece(currentPiece.className, spaceMovingTo);
     showUnselected(currentPiece);
     removePiece(currentPiece.parentNode);
@@ -242,6 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       switchPlayers();
     }
+    // console.log('f', foxLocations);
+    // console.log('h d', houndDepartures);
+    // console.log('h a', houndArrivals);
   }
 
   function foxReachesFarSide() {
@@ -254,17 +260,102 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (winner == 'hounds') {
       instruct('Hounds win!');
     }
-    replay();
+    // setTimeout(enableReplay, 500);
+    enableReplay();
   }
 
-  function replay() {
-    setInterval();
-    for (i=0; i<foxLocations.length; i++) {
-      // foxLocations[i].style.backgroundColor = 'blue';
+  function enableReplay() {
+    const replayButton = document.createElement('button');
+    replayButton.className = 'replay';
+    replayButton.textContent = 'Replay';
+    document.querySelector('.replayButtonSpace').appendChild(replayButton);
+    replayButton.addEventListener('click', () => {
+      // replayButton.style.animationName = '';
+      // console.log('clicked');
+      removeReplayButton();
+      setTimeout(removePieces, 500);
+      setTimeout(addHounds, 1000);
+      setTimeout(replayGame, 1000);
+    })
+  }
+
+  function removeReplayButton() {
+    const replayButtonSpace = document.querySelector('.replayButtonSpace');
+    replayButtonSpace.removeChild(replayButtonSpace.childNodes[0]);
+    replayButtonSpace.innerHTML = '';
+  }
+
+  function replayGame() {
+    console.log('replaying...');
+    const players = ['fox', 'hounds'];
+    move = 0;
+    replayMoves = setInterval(replayMove, 500);
+    // console.log(arrivals.length*500);
+    // setTimeout(endReplay, arrivals.length*500);
+    // foxReplays = setInterval(replayFox, 1000);
+    // houndsReplays = setInterval(replayHounds, 1000);
+    // for (i=0; i<foxLocations.length; i++) {
+    //   // foxLocations[i].style.backgroundColor = 'blue';
+    // }
+    // console.log('fox', foxLocations);
+    // console.log('hounds leave', houndDepartures);
+    // console.log('hounds arrive', houndArrivals);
+  }
+
+  function replayMove() {
+    console.log('player', players[0]);
+    console.log('arrival', arrivals[move]);
+    console.log('departure', departures[move]);
+    console.log('move', move);
+    if (move < arrivals.length) {
+      addPiece(players[0], arrivals[move]);
+      if (departures[move] != 'x') {
+        removePiece(departures[move]);
+      }
+      move ++;
+      players.splice(0, 0, players.pop());
+    } else {
+      clearInterval(replayMoves);
     }
-    console.log('fox', foxLocations);
-    console.log('hounds leave', houndDepartures);
-    console.log('hounds arrive', houndArrivals);
+  }
+
+  // function endReplay() {
+  //   clearInterval(replayMove);
+  // }
+
+  // function delayHounds() {
+  //
+  // }
+
+  // function replayFox() {
+  //   if (move < foxLocations.length) {
+  //     addPiece('fox', foxLocations[move]);
+  //     if (move>0) {
+  //       removePiece(foxLocations[move-1]);
+  //     }
+  //     move ++;
+  //     // console.log(move);
+  //   }
+  // }
+  //
+  // function replayHounds() {
+  //   // console.log(houndDepartures);
+  //   if (move < houndDepartures.length) {
+  //     addPiece('hound', houndArrivals[move]);
+  //     if (move>0) {
+  //       removePiece(houndDepartures[move-1]);
+  //     }
+  //     move ++;
+  //   }
+  // }
+
+  function removePieces() {
+    const foxTBR = document.querySelector('.fox');
+    removePiece(foxTBR.parentNode);
+    const houndsTBR = document.querySelectorAll('.hounds');
+    for (i=0; i<houndsTBR.length; i++) {
+      removePiece(houndsTBR[i].parentNode);
+    }
   }
 
   function makeHoundsUnmovable() {
@@ -289,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function removePiece(space) {
-    space.removeChild(currentPiece);
+    space.removeChild(space.childNodes[0]);
   }
 
   function switchPlayers() {
@@ -329,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function findHounds() {
-    hounds = document.querySelectorAll('.hound');
+    hounds = document.querySelectorAll('.hounds');
   }
 
   function findMovableHounds() {

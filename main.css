@@ -148,9 +148,31 @@ button:focus {
   background-color: lime;
 }
 
-.hound, .houndMarker {
+.hounds, .houndMarker {
   height: 90%;
   width: 90%;
   border-radius: 50%;
   background-color: blue;
+}
+
+.replayButtonSpace, .NewGameButtonSpace {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.replay {
+  /* animation-name: enter;
+  animation-duration: 1s; */
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
