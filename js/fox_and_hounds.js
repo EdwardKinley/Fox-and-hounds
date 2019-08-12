@@ -308,6 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('departure', departures[move]);
     console.log('move', move);
     if (move < arrivals.length) {
+      if (move == 1 && firstPositionPlayed == true) {
+        players.splice(0, 0, players.pop());
+      }
       addPiece(players[0], arrivals[move]);
       if (departures[move] != 'x') {
         removePiece(departures[move]);
