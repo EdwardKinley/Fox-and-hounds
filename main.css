@@ -49,7 +49,7 @@ body {
 }
 
 .instructions {
-  height: 45vh;
+  height: 35vh;
   /* background-color: blue; */
   display: flex;
   flex-direction: column;
@@ -83,7 +83,7 @@ body {
 } */
 
 .buttons {
-  height: 20vh;
+  height: 30vh;
   /* background-color: purple; */
   display: flex;
   flex-direction: column;
@@ -110,6 +110,14 @@ button:hover {
 
 button:focus {
   display: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .board {
@@ -155,24 +163,8 @@ button:focus {
   background-color: blue;
 }
 
-.replayButtonSpace, .NewGameButtonSpace {
+.rulesButtonSpace, .replayButtonSpace, .NewGameButtonSpace {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.replay {
-  /* animation-name: enter;
-  animation-duration: 1s; */
-}
-
-@keyframes enter {
-  0% {
-    opacity: 0;
-    transform: scale(0.1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
 }

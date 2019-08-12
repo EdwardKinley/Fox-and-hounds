@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addBoard();
   addHounds();
+  linkToRules();
   enableNewGame();
   showFoxTurn();
   instruct('Fox, take your position!');
@@ -67,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hound.className = 'hounds';
       document.querySelector(`#space0${hounds[i]}`).appendChild(hound);
     }
+  }
+
+  function linkToRules() {
+    
   }
 
   function enableNewGame() {
