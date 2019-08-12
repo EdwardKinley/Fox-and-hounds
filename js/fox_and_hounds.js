@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addBoard();
   addHounds();
-  linkToRules();
   enableNewGame();
   showFoxTurn();
   instruct('Fox, take your position!');
@@ -68,10 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
       hound.className = 'hounds';
       document.querySelector(`#space0${hounds[i]}`).appendChild(hound);
     }
-  }
-
-  function linkToRules() {
-    
   }
 
   function enableNewGame() {
@@ -291,8 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function replayGame() {
-    console.log('replaying...');
-    const players = ['fox', 'hounds'];
+    // console.log('replaying...');
+    players = ['fox', 'hounds'];
     move = 0;
     replayMoves = setInterval(replayMove, 500);
     // console.log(arrivals.length*500);
@@ -308,10 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function replayMove() {
-    console.log('player', players[0]);
-    console.log('arrival', arrivals[move]);
-    console.log('departure', departures[move]);
-    console.log('move', move);
+    // console.log('player', players[0]);
+    // console.log('arrival', arrivals[move]);
+    // console.log('departure', departures[move]);
+    // console.log('move', move);
     if (move < arrivals.length) {
       if (move == 1 && firstPositionPlayed == true) {
         players.splice(0, 0, players.pop());
@@ -324,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
       players.splice(0, 0, players.pop());
     } else {
       clearInterval(replayMoves);
+      enableReplay();
     }
   }
 
